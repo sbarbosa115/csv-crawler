@@ -68,6 +68,9 @@ class TesterCrawler {
                     }
                 }
             }
+            if (strpos($dataUrl['data'],'defaultwebpage') !== false) {
+                $description = 'defaultwebpage';
+            }
 
             $lineResult = $dataUrl['ip'] . ';' . $url . ';' . $this->cleanString($nodes->item(0)->nodeValue) . ';' . $this->cleanString($description) . ';' . $dataUrl['code'] . ';' . $dataUrl['size'] . "\n";
             fwrite($fileWriteResults, $lineResult);
