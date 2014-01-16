@@ -16,6 +16,7 @@ class TesterCrawler {
      * Contruct class
      * @param string $file Name of archivo to process.
      * @return null
+     * @author Sergio Barbosa <sbarbosa115@gmail.com>
      */
     function __construct($file) {
         set_time_limit(0);
@@ -26,6 +27,7 @@ class TesterCrawler {
     /**
      * Read file from provides location.
      * @return null
+     * @author Sergio Barbosa <sbarbosa115@gmail.com>
      */
     protected function readFile() {
         $fileWriteResults = fopen($this->tempFileName, 'wb');
@@ -47,6 +49,7 @@ class TesterCrawler {
      * Get and create domain data file.
      * @param string $url Url to get data.
      * @return null
+     * @author Sergio Barbosa <sbarbosa115@gmail.com>
      */
     protected function getDomainData($url) {
         if ($url) {
@@ -56,31 +59,37 @@ class TesterCrawler {
             $nodes = $doc->getElementsByTagName('title');
             $metas = $doc->getElementsByTagName('meta');
             $description = '';
-            for ($i = 0; $i < $metas->length; $i++) {
-                $meta = $metas->item($i);
-                $description = substr($meta->getAttribute('content'), 20);
+
+            foreach ($metas as $meta) {
+                if (strtolower($meta->getAttribute('name')) == 'description') {
+                    if ($meta->getAttribute('content')) {
+                        $description = $meta->getAttribute('content');
+                    } else if ($meta->getAttribute('value')) {
+                        $description = $meta->getAttribute('value');
+                    }
+                }
             }
 
-            $lineResult = $dataUrl['ip'] . ';' . $url . ';' .substr($nodes->item(0)->nodeValue, 20) . ';' . trim($description) . ';' . $dataUrl['code'] . ';' . $dataUrl['size'] . "\n";
+            $lineResult = $dataUrl['ip'] . ';' . $url . ';' . $this->cleanString($nodes->item(0)->nodeValue) . ';' . $this->cleanString($description) . ';' . $dataUrl['code'] . ';' . $dataUrl['size'] . "\n";
             fwrite($fileWriteResults, $lineResult);
             fclose($fileWriteResults);
         }
     }
 
-    protected function validateUrl($originalUrl, $urlResource) {
-        $url = '';
-        if (!preg_match("/(ftp|https|http?)/", $urlResource)) {
-            $url = $originalUrl . '/' . $urlResource;
-        } else {
-            $url = $urlResource;
-        }
-        return $url;
+    /**
+     * Clean string to print in file.
+     * @param string $string String to clean.
+     * @return string String clean.
+     */
+    protected function cleanString($string) {
+        return utf8_decode(substr(trim($string), 0, 20));
     }
 
     /**
      * Add http protocol to url before process.
      * @param string $url Url to process.
      * @return string Url repared.
+     * @author Sergio Barbosa <sbarbosa115@gmail.com>
      */
     protected function addProtocol($url) {
         if ($url) {
@@ -97,16 +106,7 @@ class TesterCrawler {
     /**
      * Get the html file title.
      * @return null
-     */
-    protected function getDocument($url) {
-        $doc = new DOMDocument();
-        @$doc->loadHTMLFile($url);
-        return $doc;
-    }
-
-    /**
-     * Get the html file title.
-     * @return null
+     * @author Sergio Barbosa <sbarbosa115@gmail.com>
      */
     protected function getDocumentCurl($data) {
         $doc = new DOMDocument();
@@ -118,8 +118,9 @@ class TesterCrawler {
      * Get http code for the url.
      * @param string $url Url to get http code
      * @return int Code returned. 
+     * @author Sergio Barbosa <sbarbosa115@gmail.com>
      */
-    protected function verifyUrlResource($url) { 
+    protected function verifyUrlResource($url) {
         $handle = curl_init($url);
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($handle, CURLOPT_TIMEOUT, 10);
@@ -136,6 +137,7 @@ class TesterCrawler {
     /**
      * Read file from provides location.
      * @return null
+     * @author Sergio Barbosa <sbarbosa115@gmail.com>
      */
     public function processDomains() {
         $this->readFile();
