@@ -147,5 +147,5 @@ class TesterCrawler {
 
 }
 
-$crawler = new TesterCrawler('lista_dominios.txt');
+$crawler = new TesterCrawler('domain_list.txt');
 $crawler->processDomains();
