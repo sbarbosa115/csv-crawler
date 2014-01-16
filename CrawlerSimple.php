@@ -10,7 +10,6 @@ class TesterCrawler {
 
     protected $file = '';
     protected $tempFileName = '';
-    protected $homeSites = array('index.html', 'index.htm', 'home.htm', 'home.html');
 
     /**
      * Contruct class
