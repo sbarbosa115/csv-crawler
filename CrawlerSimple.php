@@ -2,8 +2,7 @@
 
 /**
  * Testing URL Class for multiple websites from csv file.
- * @version 1.0
- * @author Sergio Barbosa <sbarbosa115@gmail.com>
+ * @version 1.0 
  * @package TesterCrawler
  */
 class TesterCrawler {
@@ -15,7 +14,6 @@ class TesterCrawler {
      * Contruct class
      * @param string $file Name of archivo to process.
      * @return null
-     * @author Sergio Barbosa <sbarbosa115@gmail.com>
      */
     function __construct($file) {
         set_time_limit(0);
@@ -25,8 +23,7 @@ class TesterCrawler {
 
     /**
      * Read file from provides location.
-     * @return null
-     * @author Sergio Barbosa <sbarbosa115@gmail.com>
+     * @return null    
      */
     protected function readFile() {
         $fileWriteResults = fopen($this->tempFileName, 'wb');
@@ -48,7 +45,6 @@ class TesterCrawler {
      * Get and create domain data file.
      * @param string $url Url to get data.
      * @return null
-     * @author Sergio Barbosa <sbarbosa115@gmail.com>
      */
     protected function getDomainData($url) {
         if ($url) {
@@ -90,8 +86,7 @@ class TesterCrawler {
     /**
      * Add http protocol to url before process.
      * @param string $url Url to process.
-     * @return string Url repared.
-     * @author Sergio Barbosa <sbarbosa115@gmail.com>
+     * @return string Url repared.    
      */
     protected function addProtocol($url) {
         if ($url) {
@@ -107,8 +102,7 @@ class TesterCrawler {
 
     /**
      * Get the html file title.
-     * @return null
-     * @author Sergio Barbosa <sbarbosa115@gmail.com>
+     * @return null    
      */
     protected function getDocumentCurl($data) {
         $doc = new DOMDocument();
@@ -119,8 +113,7 @@ class TesterCrawler {
     /**
      * Get http code for the url.
      * @param string $url Url to get http code
-     * @return int Code returned. 
-     * @author Sergio Barbosa <sbarbosa115@gmail.com>
+     * @return int Code returned.    
      */
     protected function verifyUrlResource($url) {
         $handle = curl_init($url);
@@ -138,8 +131,7 @@ class TesterCrawler {
 
     /**
      * Read file from provides location.
-     * @return null
-     * @author Sergio Barbosa <sbarbosa115@gmail.com>
+     * @return null     
      */
     public function processDomains() {
         $this->readFile();
